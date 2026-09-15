@@ -186,6 +186,7 @@ class GeneratedFlow:
     population: str
     declared_truth: str
     shaping: float = 0.0             # s in [0, 1]
+    phi: float = 0.0                 # volume-matching fraction
     added_latency_ms: float = 0.0    # measured, not assumed
     padding_overhead: float = 0.0    # measured, not assumed
 
@@ -225,7 +226,7 @@ def _human_flow(rng: random.Random, model: BehaviourModel,
 
 
 def _c2_flow(rng: random.Random, n: int,
-             shaping: float, target: BehaviourModel
+             shaping: float, phi: float, target: BehaviourModel
              ) -> Tuple[List[float], List[int], List[bool], float, float]:
     """
     Generate a beacon shaped toward `target` with intensity s, under a task
@@ -325,12 +326,12 @@ def _c2_flow(rng: random.Random, n: int,
         # filler packets contribute nothing to useful_bytes by construction
 
         # ---- size: pad toward the cover distribution ----------------------
-        if s > 0:
+        if phi > 0:
             mu = target.up_size_mu if forward else target.down_size_mu
             sg = target.up_size_sigma if forward else target.down_size_sigma
             desired = int(min(1460, max(32, rng.lognormvariate(mu, sg))))
-            size = int(want + s * max(0, desired - want))
-            size = min(1460, size + int(rng.random() * s * 64))
+            size = int(want + phi * max(0, desired - want))
+            size = min(1460, size + int(rng.random() * phi * 64))
         else:
             size = want
         wire_bytes += size
@@ -373,16 +374,16 @@ def _assemble(rng: random.Random, src: str, dst: str, dport: int,
 
 def generate(n_benign: int = 6000, n_malware_naive: int = 800,
              n_malware_mimicry: int = 2400,
-             shaping_levels: Optional[List[float]] = None,
+             phi_levels: Optional[List[float]] = None,
              shared_fraction: float = 0.35,
              seed: int = 1337) -> List[GeneratedFlow]:
     """
-    Produce the corpus. `shaping_levels` is the sweep: each mimicry flow is
-    assigned one level, so the evaluation harness can plot recall against the
-    attacker's measured cost at that level.
+    Produce the corpus. `phi_levels` is the sweep: each mimicry flow is
+    assigned one level of volume-matching, so the evaluation harness can plot
+    recall against the attacker's measured cost at that level.
     """
-    if shaping_levels is None:
-        shaping_levels = [0.0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 0.95, 1.0]
+    if phi_levels is None:
+        phi_levels = [0.0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 0.95, 1.0]
 
     rng = random.Random(seed)
     dedicated, shared = _pool(DEDICATED_POOL), _pool(SHARED_POOL)
@@ -426,7 +427,7 @@ def generate(n_benign: int = 6000, n_malware_naive: int = 800,
     naive_hello = custom_c2_hello()
     for i in range(n_malware_naive):
         n = rng.randint(8, SPLT_PACKETS)
-        gaps, sizes, dirs, _, _ = _c2_flow(rng, n, 0.0, HUMAN_MODELS["chrome"])
+        gaps, sizes, dirs, _, _ = _c2_flow(rng, n, 0.0, 0.0, HUMAN_MODELS["chrome"])
         flow = _assemble(rng, rng.choice(attackers), rng.choice(c2), 443,
                          gaps, sizes, dirs, naive_hello, t0 + i * 0.91)
         flow.truth = {"label": 1, "class": "c2_naive"}
@@ -436,9 +437,9 @@ def generate(n_benign: int = 6000, n_malware_naive: int = 800,
 
     # --- mimicry malware: cloned Chrome hello + shaping sweep --------------
     for i in range(n_malware_mimicry):
-        s = shaping_levels[i % len(shaping_levels)]
+        phi = phi_levels[i % len(phi_levels)]
         n = rng.randint(8, SPLT_PACKETS)
-        gaps, sizes, dirs, lat, ovh = _c2_flow(rng, n, s,
+        gaps, sizes, dirs, lat, ovh = _c2_flow(rng, n, 1.0, phi,
                                                HUMAN_MODELS["chrome"])
         # co-tenancy: a slice of beacons run from compromised hosts behind the
         # same shared egress as innocent users. This is the collateral-damage
@@ -447,10 +448,10 @@ def generate(n_benign: int = 6000, n_malware_naive: int = 800,
         src = rng.choice(shared if behind_nat else attackers)
         flow = _assemble(rng, src, rng.choice(c2), 443, gaps, sizes, dirs,
                          hellos["chrome"], t0 + i * 0.55)
-        flow.truth = {"label": 1, "class": "c2_mimicry", "shaping": s}
+        flow.truth = {"label": 1, "class": "c2_mimicry", "shaping": 1.0, "phi": phi}
         out.append(GeneratedFlow(flow=flow, label=1,
                                  population="malware_mimicry",
-                                 declared_truth="chrome", shaping=s,
+                                 declared_truth="chrome", shaping=1.0, phi=phi,
                                  added_latency_ms=lat, padding_overhead=ovh))
 
     rng.shuffle(out)

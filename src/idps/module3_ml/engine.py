@@ -105,16 +105,17 @@ class DetectionEngine:
         sup = float(self.supervised.score(X, np.array([d]))[0])
 
         # ---- Tier 2 ------------------------------------------------------
+        tau = self.dissonance.tau_per_class.get(rec.declared, self.dissonance.tau)
         if sup >= self.supervised.threshold:
-            cost = evasion_cost_lower_bound(d, self.dissonance.tau,
+            cost = evasion_cost_lower_bound(d, tau,
                                             n_packets=rec.n_packets or 15)
-            if d > self.dissonance.tau:
+            if d > tau:
                 reason = (
                     f"Connection declares the {rec.declared} client stack, but "
                     f"its packet timing and size structure are far better "
                     f"explained by the {best_fit} behaviour model "
                     f"(D={d:.1f} nats against a calibrated threshold of "
-                    f"{self.dissonance.tau:.1f}). The declared identity is "
+                    f"{tau:.1f}). The declared identity is "
                     f"inconsistent with the observed physics.")
             else:
                 reason = (
@@ -125,7 +126,7 @@ class DetectionEngine:
                 label=MALICIOUS, tier="tier2_supervised",
                 risk=sup, confidence=min(0.99, 0.5 + sup / 2),
                 declared=rec.declared, best_fit=best_fit,
-                dissonance=d, dissonance_tau=self.dissonance.tau,
+                dissonance=d, dissonance_tau=tau,
                 supervised_score=sup, reason=reason,
                 evasion_cost=cost, record=rec)
 
@@ -139,7 +140,7 @@ class DetectionEngine:
                     risk=min(0.95, 0.5 + anom / 4),
                     confidence=0.55,
                     declared=rec.declared, best_fit=best_fit,
-                    dissonance=d, dissonance_tau=self.dissonance.tau,
+                    dissonance=d, dissonance_tau=tau,
                     supervised_score=sup, anomaly_score=anom,
                     reason=("Behaviour falls outside the clean-traffic baseline "
                             "without matching any known attack pattern. "
@@ -150,7 +151,7 @@ class DetectionEngine:
         return Verdict(
             label=BENIGN, tier="clear", risk=sup, confidence=1.0 - sup,
             declared=rec.declared, best_fit=best_fit,
-            dissonance=d, dissonance_tau=self.dissonance.tau,
+            dissonance=d, dissonance_tau=tau,
             supervised_score=sup, anomaly_score=anom,
             reason="Declared identity is consistent with observed physics.",
             record=rec)

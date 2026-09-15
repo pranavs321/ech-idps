@@ -54,7 +54,7 @@ def main() -> None:
     print(f"  {len(flows)} flows in {time.time() - t0:.1f}s")
 
     print("extracting 14-D vectors through the Module 2 sensor path")
-    X, y, declared, ja4s, pops, shaping, latency, overhead = [], [], [], [], [], [], [], []
+    X, y, declared, ja4s, pops, shaping, phis, latency, overhead = [], [], [], [], [], [], [], [], []
     dropped = 0
     for gf in flows:
         rec = extract(gf.flow)
@@ -67,6 +67,7 @@ def main() -> None:
         ja4s.append(rec.ja4 or "")
         pops.append(gf.population)
         shaping.append(gf.shaping)
+        phis.append(gf.phi)
         latency.append(gf.added_latency_ms)
         overhead.append(gf.padding_overhead)
 
@@ -79,6 +80,7 @@ def main() -> None:
         path, X=X, y=y,
         declared=np.array(declared), ja4=np.array(ja4s),
         population=np.array(pops), shaping=np.asarray(shaping, dtype=np.float32),
+        phi=np.asarray(phis, dtype=np.float32),
         latency_ms=np.asarray(latency, dtype=np.float32),
         overhead=np.asarray(overhead, dtype=np.float32),
         feature_names=np.array(FEATURE_NAMES))

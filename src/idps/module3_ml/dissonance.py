@@ -59,6 +59,7 @@ import numpy as np
 from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import StandardScaler
 
+from .cover_rate import calibrate_thresholds
 from ..features import PHYSICS_IDX
 
 # Classes with fewer than this many benign samples do not get their own
@@ -84,7 +85,8 @@ class DissonanceModel:
         self.scaler: Optional[StandardScaler] = None
         self.densities: Dict[str, GaussianMixture] = {}
         self.classes: List[str] = []
-        self.tau: float = float("inf")
+        self.tau: float = float("inf")  # Global fallback
+        self.tau_per_class: Dict[str, float] = {}
         self.calibration: Dict[str, float] = {}
 
     # -- fitting ---------------------------------------------------------
@@ -129,9 +131,11 @@ class DissonanceModel:
         # Calibrate tau on benign flows, so the threshold means "this FPR".
         d_benign = self.score(X[benign_mask], declared[benign_mask])
         self.tau = float(np.quantile(d_benign, 1.0 - self.config.target_fpr))
+        self.tau_per_class = calibrate_thresholds(d_benign, declared[benign_mask], self.config.target_fpr)
         self.calibration = {
             "target_fpr": self.config.target_fpr,
             "tau": self.tau,
+            "tau_per_class": self.tau_per_class,
             "benign_median": float(np.median(d_benign)),
             "benign_p95": float(np.quantile(d_benign, 0.95)),
             "n_benign": int(benign_mask.sum()),
@@ -174,7 +178,12 @@ class DissonanceModel:
         return [self.classes[j] for j in L.argmax(axis=1)]
 
     def is_dissonant(self, X: np.ndarray, declared: Sequence[str]) -> np.ndarray:
-        return self.score(X, declared) > self.tau
+        scores = self.score(X, declared)
+        out = np.zeros(len(scores), dtype=bool)
+        for i, c in enumerate(declared):
+            tau = self.tau_per_class.get(c, self.tau)
+            out[i] = scores[i] > tau
+        return out
 
     # -- persistence ------------------------------------------------------
     def save(self, path: str) -> None:

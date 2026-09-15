@@ -137,18 +137,18 @@ def result_a_baselines(X, y, ja4, declared, tr, te, blocklist):
 
 
 # ---------------------------------------------------------------------------
-def result_b_evasion_curve(y, ours, pops, shaping, latency, overhead, te, thr):
+def result_b_evasion_curve(y, ours, pops, phi, latency, overhead, te, thr):
     print("\n" + "=" * 72)
     print("B. EVASION-COST CURVE  (Pillar 2, empirical)")
     print("=" * 72)
     mim = pops[te] == "malware_mimicry"
     benign = y[te] == 0
     curve = []
-    print(f"{'shaping s':>10s} {'n':>6s} {'recall':>8s} "
+    print(f"{'volume match φ':>14s} {'n':>6s} {'recall':>8s} "
           f"{'latency ms':>11s} {'bandwidth overhead':>19s}")
     print("-" * 72)
-    for s in sorted(set(shaping[te][mim])):
-        sel = mim & (shaping[te] == s)
+    for p in sorted(set(phi[te][mim])):
+        sel = mim & (phi[te] == p)
         if sel.sum() == 0:
             continue
         rec = float((ours[sel] >= thr).mean())
@@ -157,9 +157,9 @@ def result_b_evasion_curve(y, ours, pops, shaping, latency, overhead, te, thr):
         # heavy tail reports the outliers rather than the typical cost.
         lat = float(np.median(latency[te][sel]))
         ovh = float(np.median(overhead[te][sel]))
-        curve.append({"shaping": float(s), "n": int(sel.sum()),
+        curve.append({"phi": float(p), "n": int(sel.sum()),
                       "recall": rec, "latency_ms": lat, "overhead": ovh})
-        print(f"{s:10.2f} {int(sel.sum()):6d} {rec:8.4f} {lat:11.0f} "
+        print(f"{p:14.2f} {int(sel.sum()):6d} {rec:8.4f} {lat:11.0f} "
               f"{ovh * 100:18.0f}%")
 
     print("\nReading the curve: recall falls as the adversary shapes harder, "
@@ -352,14 +352,14 @@ def make_plots(curve, baselines, ablation, collateral, out: Path):
 
     fig, axes = plt.subplots(2, 2, figsize=(11, 8))
 
-    # B1: recall vs shaping
+    # B1: recall vs phi
     ax = axes[0][0]
-    s = [c["shaping"] for c in curve]
+    p_vals = [c["phi"] for c in curve]
     r = [c["recall"] for c in curve]
-    ax.plot(s, r, "o-", color="#1f3a68", lw=2)
-    ax.set_xlabel("shaping intensity s")
+    ax.plot(p_vals, r, "o-", color="#1f3a68", lw=2)
+    ax.set_xlabel("volume-matching fraction $\\varphi$")
     ax.set_ylabel("detector recall")
-    ax.set_title("Recall falls as the adversary shapes")
+    ax.set_title("Recall falls as the adversary matches volume")
     ax.set_ylim(0, 1.02)
 
     # B2: the actual evasion-cost curve -- recall vs measured price
@@ -367,7 +367,7 @@ def make_plots(curve, baselines, ablation, collateral, out: Path):
     ov = [c["overhead"] * 100 for c in curve]
     ax.plot(ov, r, "o-", color="#a4391f", lw=2)
     for c in curve:
-        ax.annotate(f"s={c['shaping']:.2f}",
+        ax.annotate(f"$\\varphi$={c['phi']:.2f}",
                     (c["overhead"] * 100, c["recall"]),
                     fontsize=6, xytext=(3, 4), textcoords="offset points")
     ax.set_xscale("symlog")
@@ -424,8 +424,8 @@ def main() -> None:
     data = np.load(args.data, allow_pickle=True)
     X, y = data["X"], data["y"].astype(int)
     declared, ja4, pops = data["declared"], data["ja4"], data["population"]
-    shaping, latency, overhead = (data["shaping"], data["latency_ms"],
-                                  data["overhead"])
+    phi, latency, overhead = (data["phi"], data["latency_ms"],
+                              data["overhead"])
     tr, va, te = split(len(X))
     blocklist = JA4Blocklist.load(str(Path(args.artifacts) /
                                       "ja4_blocklist.json"))
@@ -433,7 +433,7 @@ def main() -> None:
     baselines, dm, st, ours = result_a_baselines(
         X, y, ja4, declared, tr, te, blocklist)
     thr = baselines["This system (dissonance-coupled)"]["threshold"]
-    curve = result_b_evasion_curve(y, ours, pops, shaping, latency, overhead,
+    curve = result_b_evasion_curve(y, ours, pops, phi, latency, overhead,
                                    te, thr)
     ablation = result_c_ablation(X, y, declared, tr, te)
     collateral = result_d_collateral(X, y, declared, pops, ja4, te, ours, thr, dm)
