@@ -42,7 +42,7 @@ def _parse_frame(raw: bytes):
         # Ethernet II. Handle an optional 802.1Q VLAN tag.
         ethertype = struct.unpack_from("!H", raw, 12)[0]
         off = 14
-        if ethertype == 0x8100:                       # VLAN
+        if ethertype == 0x8100:                       # VLANwhat is
             ethertype = struct.unpack_from("!H", raw, 16)[0]
             off = 18
         if ethertype != 0x0800:                       # not IPv4
