@@ -59,3 +59,20 @@
 - **Deliberate leakage self-test:** Vocabulary fit on all rows + threshold tuned on test must inflate P1.
 - **Label-rule check:** `xgb_combined_no_server` and `rbg_no_dst` reported beside their full versions.
 - **Reporting:** Negative results are reported as results.
+
+---
+
+## Amendments (Exploratory Findings Follow-Up)
+
+**Date committed:** 2026-10-21  
+**No model is trained or scored on confirmatory data before this file is committed.**
+
+### A1. Environment Baseline Requirement
+Report an `env_only` baseline (TCP/IP fields only: JA4T and JA4TS parts and initial TTLs) beside every JA4 result.
+
+### A2. Combined Disjoint Protocol
+Add a combined split with no shared capture AND no shared JA4 value.
+
+### A3. Transport Artifact Ablation
+Report every result with and without JA4T/JA4TS fields.
+
