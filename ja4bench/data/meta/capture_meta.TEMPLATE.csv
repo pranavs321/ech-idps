@@ -1,0 +1,2 @@
+capture_id,source,env_group,vantage,platform,os,os_build,host_kind,capture_date,year,family,label_basis,victim_ip,sha256,notes
+2024-05-14_darkgate.pcap,mta2024,mta_ad_lab_win10_2024,lan_tap,desktop,windows,unknown,vm,2024-05-14,2024,darkgate,ioc_verified,172.16.1.84,<sha256>,example row - replace

@@ -10,7 +10,15 @@ data/raw/
 *.pcapng
 *.zip
 third_party/
-ja4bench/
+ja4bench/.venv/
+ja4bench/**/__pycache__/
+ja4bench/data/raw/
+ja4bench/data/external/
+ja4bench/data/canonical/
+ja4bench/data/interim/
+ja4bench/get-pip.py
+ja4bench/ja4bench/ja4bench/
+ja4bench/results/
 ja4lab/**/data/
 ja4lab/**/.venv/
 ja4lab/**/__pycache__/

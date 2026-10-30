@@ -1,0 +1,22 @@
+columns:
+  capture_id: pcap
+  ja4: ja4
+  sni: sni
+  src_ip: src_ip
+  dst_ip: dst_ip
+  dst_port: srv_port
+  ja4t: ja4t
+  ttl: cli_ttl
+  win: syn_win
+  ts: ts_start
+  year: year_col
+constants:
+  source: mta_temporal
+  vantage: lan_tap
+per_capture_csv: data/meta/capture_meta_temporal.csv
+label:
+  column: label_flow
+  map: {"1": 1, "0": 0, "-1": -1}
+  basis_column: label_flow_basis
+  basis_map: {zeek_labels: zeek_labels, mta_ioc: mta_ioc, unknown: unknown}
+  default_basis: unknown

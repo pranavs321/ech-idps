@@ -1,0 +1,38 @@
+{
+  "utc": "2026-10-07T10:05:37+00:00",
+  "ja4bench": "0.3.0",
+  "python": "3.12.3",
+  "pandas": "3.0.2",
+  "numpy": "2.4.4",
+  "args": {
+    "inp": [
+      "data/canonical/matousek2024.csv.gz"
+    ],
+    "out": "results_reference/leak_test",
+    "protocols": "P2_capture,P3_ja4",
+    "combos": "xgb:ja4_components,xgbLEAK:ja4_components",
+    "domain_col": "platform",
+    "k": 5,
+    "seed": 42,
+    "boot": 1000,
+    "tcp_only": true,
+    "exclude_flag": [
+      "flag_no_capture_id"
+    ],
+    "only_env": []
+  },
+  "input_sha256": {
+    "data/canonical/matousek2024.csv.gz": "1888415bff4645b7d02e06bb0d8a7902fdf7af0f47ec3448e825eea7d41283c7"
+  },
+  "filters": [
+    "label in {0,1}: 30664 -> 21127",
+    "tcp-only: 21127 -> 20148",
+    "exclude flag_no_capture_id: 20148 -> 18704"
+  ],
+  "rows_used": 18704,
+  "captures_used": 1421,
+  "train_runtime_s": 44,
+  "sklearn": "1.8.0",
+  "xgboost": "3.4.1",
+  "summarised_from": "oof.csv.gz"
+}

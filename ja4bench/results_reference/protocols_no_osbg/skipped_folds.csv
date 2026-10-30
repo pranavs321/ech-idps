@@ -1,0 +1,4 @@
+protocol,fold,reason
+P5_temporal,train<= 2022,train fold has one class
+P5_temporal,train<= 2023,train fold has one class
+P7_source,all,only one value of source: ['matousek2024']

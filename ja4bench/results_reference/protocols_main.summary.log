@@ -1,0 +1,86 @@
+summarised P1_random lookup:ja4
+summarised P1_random xgb:ja4_components
+summarised P1_random rf:ja4_components
+summarised P1_random xgb:ja4_plus_sni
+summarised P1_random xgb:env_only
+summarised P2_capture lookup:ja4
+summarised P2_capture xgb:ja4_components
+summarised P2_capture rf:ja4_components
+summarised P2_capture xgb:ja4_plus_sni
+summarised P2_capture xgb:env_only
+summarised P3_ja4 lookup:ja4
+summarised P3_ja4 xgb:ja4_components
+summarised P3_ja4 rf:ja4_components
+summarised P3_ja4 xgb:ja4_plus_sni
+summarised P3_ja4 xgb:env_only
+summarised P4_family lookup:ja4
+summarised P4_family xgb:ja4_components
+summarised P4_family rf:ja4_components
+summarised P4_family xgb:ja4_plus_sni
+summarised P4_family xgb:env_only
+summarised P6_domain lookup:ja4
+summarised P6_domain xgb:ja4_components
+summarised P6_domain rf:ja4_components
+summarised P6_domain xgb:ja4_plus_sni
+summarised P6_domain xgb:env_only
+summarised P8_env_matched lookup:ja4
+summarised P8_env_matched xgb:ja4_components
+summarised P8_env_matched rf:ja4_components
+summarised P8_env_matched xgb:ja4_plus_sni
+summarised P8_env_matched xgb:env_only
+# Protocol results (generated; do not edit by hand)
+
+```json
+{
+  "note": "train_meta.json absent; summarised from oof.csv.gz",
+  "summarised_from": "oof.csv.gz"
+}
+```
+
+Flow-level metrics pooled over out-of-fold predictions; [95% CI] = bootstrap over captures.
+cap_alert_benign = share of BENIGN captures with >=1 flow scored >= 0.5 (host-level false alarms).
+seen_ja4 = share of test rows whose exact JA4 occurred in training.
+fold ROC-AUC = mean (min) of per-fold ROC-AUC. When it differs from the pooled value, trust the
+per-fold value: pooling mixes folds with different score scales. For P5/P6/P7 read folds.csv.
+
+| protocol | combo | ROC-AUC pooled | fold ROC-AUC | PR-AUC | F1 | recall | FPR | cap ROC-AUC | cap_alert_benign | seen_ja4 | n_test | captures |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| P1_random | lookup:ja4 | 0.920 [0.900, 0.937] | 0.922 (0.915) | 0.973 [0.964, 0.980] | 0.929 [0.911, 0.945] | 0.954 | 0.351 | 0.947 | 0.722 | 1.00 | 18704 | 1421 |
+| P1_random | xgb:ja4_components | 0.920 [0.900, 0.937] | 0.921 (0.915) | 0.973 [0.964, 0.980] | 0.891 [0.865, 0.914] | 0.843 | 0.172 | 0.945 | 0.302 | 1.00 | 18704 | 1421 |
+| P1_random | rf:ja4_components | 0.920 [0.900, 0.937] | 0.921 (0.915) | 0.973 [0.964, 0.980] | 0.888 [0.864, 0.909] | 0.837 | 0.166 | 0.945 | 0.306 | 1.00 | 18704 | 1421 |
+| P1_random | xgb:ja4_plus_sni | 0.990 [0.986, 0.992] | 0.990 (0.987) | 0.997 [0.996, 0.998] | 0.967 [0.959, 0.973] | 0.948 | 0.045 | 0.993 | 0.182 | 1.00 | 18704 | 1421 |
+| P1_random | xgb:env_only | 0.870 [0.836, 0.898] | 0.872 (0.869) | 0.960 [0.942, 0.974] | 0.846 [0.802, 0.883] | 0.741 | 0.034 | 0.917 | 0.025 | 1.00 | 18704 | 1421 |
+| P2_capture | lookup:ja4 | 0.910 [0.883, 0.933] | 0.913 (0.890) | 0.968 [0.958, 0.977] | 0.928 [0.910, 0.944] | 0.954 | 0.359 | 0.943 | 0.753 | 0.99 | 18704 | 1421 |
+| P2_capture | xgb:ja4_components | 0.908 [0.882, 0.931] | 0.911 (0.885) | 0.967 [0.955, 0.976] | 0.886 [0.863, 0.903] | 0.835 | 0.177 | 0.939 | 0.306 | 0.99 | 18704 | 1421 |
+| P2_capture | rf:ja4_components | 0.909 [0.880, 0.933] | 0.912 (0.881) | 0.968 [0.957, 0.977] | 0.887 [0.864, 0.905] | 0.837 | 0.178 | 0.941 | 0.312 | 0.99 | 18704 | 1421 |
+| P2_capture | xgb:ja4_plus_sni | 0.982 [0.972, 0.988] | 0.981 (0.960) | 0.994 [0.992, 0.996] | 0.962 [0.953, 0.969] | 0.949 | 0.082 | 0.986 | 0.219 | 0.99 | 18704 | 1421 |
+| P2_capture | xgb:env_only | 0.857 [0.818, 0.892] | 0.874 (0.845) | 0.957 [0.936, 0.973] | 0.846 [0.805, 0.883] | 0.741 | 0.034 | 0.920 | 0.025 | 0.99 | 18704 | 1421 |
+| P3_ja4 | lookup:ja4 | 0.326 [0.292, 0.365] | 0.500 (0.500) | 0.705 [0.655, 0.756] | 0.876 [0.843, 0.903] | 1.000 | 1.000 | 0.173 | 1.000 | 0.00 | 18704 | 1421 |
+| P3_ja4 | xgb:ja4_components | 0.857 [0.827, 0.881] | 0.808 (0.604) | 0.943 [0.922, 0.960] | 0.847 [0.825, 0.867] | 0.785 | 0.239 | 0.917 | 0.367 | 0.00 | 18704 | 1421 |
+| P3_ja4 | rf:ja4_components | 0.836 [0.805, 0.861] | 0.752 (0.462) | 0.942 [0.924, 0.958] | 0.877 [0.854, 0.896] | 0.831 | 0.223 | 0.896 | 0.383 | 0.00 | 18704 | 1421 |
+| P3_ja4 | xgb:ja4_plus_sni | 0.874 [0.845, 0.900] | 0.849 (0.725) | 0.954 [0.936, 0.970] | 0.869 [0.849, 0.886] | 0.809 | 0.190 | 0.924 | 0.352 | 0.00 | 18704 | 1421 |
+| P3_ja4 | xgb:env_only | 0.837 [0.791, 0.876] | 0.859 (0.664) | 0.952 [0.931, 0.969] | 0.846 [0.799, 0.883] | 0.739 | 0.034 | 0.896 | 0.025 | 0.00 | 18704 | 1421 |
+| P4_family | lookup:ja4 | 0.835 [0.795, 0.871] | 0.859 (0.788) | 0.942 [0.922, 0.958] | 0.895 [0.867, 0.918] | 0.950 | 0.608 | 0.916 | 0.833 | 0.97 | 18704 | 1421 |
+| P4_family | xgb:ja4_components | 0.855 [0.816, 0.889] | 0.872 (0.799) | 0.948 [0.931, 0.962] | 0.874 [0.850, 0.897] | 0.834 | 0.259 | 0.931 | 0.352 | 0.97 | 18704 | 1421 |
+| P4_family | rf:ja4_components | 0.857 [0.817, 0.891] | 0.865 (0.795) | 0.953 [0.938, 0.965] | 0.868 [0.846, 0.891] | 0.825 | 0.270 | 0.926 | 0.367 | 0.97 | 18704 | 1421 |
+| P4_family | xgb:ja4_plus_sni | 0.920 [0.890, 0.944] | 0.937 (0.910) | 0.977 [0.968, 0.984] | 0.909 [0.885, 0.929] | 0.928 | 0.397 | 0.968 | 0.497 | 0.97 | 18704 | 1421 |
+| P4_family | xgb:env_only | 0.870 [0.831, 0.905] | 0.872 (0.845) | 0.961 [0.942, 0.975] | 0.845 [0.805, 0.885] | 0.739 | 0.034 | 0.920 | 0.025 | 0.97 | 18704 | 1421 |
+| P6_domain | lookup:ja4 | 0.195 [0.150, 0.247] | 0.530 (0.455) | 0.680 [0.629, 0.733] | 0.845 [0.818, 0.869] | 0.933 | 0.969 | 0.180 | 0.985 | 0.27 | 18704 | 1421 |
+| P6_domain | xgb:ja4_components | 0.156 [0.116, 0.207] | 0.555 (0.227) | 0.645 [0.586, 0.707] | 0.334 [0.286, 0.382] | 0.251 | 0.882 | 0.151 | 0.880 | 0.27 | 18704 | 1421 |
+| P6_domain | rf:ja4_components | 0.174 [0.132, 0.228] | 0.574 (0.324) | 0.652 [0.596, 0.711] | 0.436 [0.372, 0.497] | 0.351 | 0.917 | 0.168 | 0.895 | 0.27 | 18704 | 1421 |
+| P6_domain | xgb:ja4_plus_sni | 0.185 [0.145, 0.234] | 0.485 (0.237) | 0.651 [0.592, 0.712] | 0.467 [0.416, 0.514] | 0.374 | 0.794 | 0.228 | 0.886 | 0.27 | 18704 | 1421 |
+| P6_domain | xgb:env_only | 0.203 [0.161, 0.248] | 0.500 (0.500) | 0.705 [0.650, 0.759] | 0.876 [0.843, 0.904] | 1.000 | 1.000 | 0.143 | 1.000 | 0.27 | 18704 | 1421 |
+| P8_env_matched | lookup:ja4 | 0.906 [0.886, 0.923] | 0.908 (0.882) | 0.927 [0.904, 0.945] | 0.849 [0.817, 0.875] | 0.897 | 0.280 | 0.952 | 0.687 | 1.00 | 8910 | 532 |
+| P8_env_matched | xgb:ja4_components | 0.906 [0.887, 0.923] | 0.908 (0.882) | 0.926 [0.904, 0.945] | 0.823 [0.800, 0.843] | 0.778 | 0.146 | 0.952 | 0.543 | 1.00 | 8910 | 532 |
+| P8_env_matched | rf:ja4_components | 0.907 [0.887, 0.923] | 0.909 (0.882) | 0.927 [0.905, 0.945] | 0.823 [0.800, 0.843] | 0.778 | 0.144 | 0.952 | 0.543 | 1.00 | 8910 | 532 |
+| P8_env_matched | xgb:ja4_plus_sni | 0.993 [0.991, 0.996] | 0.993 (0.992) | 0.995 [0.993, 0.997] | 0.966 [0.958, 0.973] | 0.944 | 0.014 | 0.989 | 0.083 | 1.00 | 8910 | 532 |
+| P8_env_matched | xgb:env_only | 0.578 [0.506, 0.652] | 0.606 (0.536) | 0.658 [0.568, 0.752] | 0.389 [0.290, 0.486] | 0.248 | 0.036 | 0.584 | 0.027 | 1.00 | 8910 | 532 |
+
+## Skipped folds
+
+| protocol | fold | reason |
+|---|---|---|
+| P5_temporal | train<= 2022 | train fold has one class |
+| P5_temporal | train<= 2023 | train fold has one class |
+| P7_source | all | only one value of source: ['matousek2024'] |
+

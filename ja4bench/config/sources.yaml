@@ -1,0 +1,182 @@
+# Every data source the project may use. One entry per source.
+# status: verified = link/description checked on 2026-10-06 | memory = from memory, VERIFY before use
+# roles:  TRAIN | EXT_TEST (external test, frozen models) | TEMPORAL | ENV_MATCHED (both classes, same
+#         environment) | BENIGN_FP (real-world false-alarm measurement) | ENRICH (never labels) |
+#         EXTRACTOR_VALIDATION | DISCOVERY (lists of more pcaps)
+# labels: what the label is based on; env: what we know about the capture environment
+
+matousek2024:
+  what: JA4+ corpus behind the CNSM 2024 Experience Report; 4 CSVs + ~1,924 pcaps
+  url: https://github.com/matousp/malware-analysis
+  env: {desktop_malware: triage_sandbox_windows, desktop_apps: but_lab_windows,
+        mobile: hashapp_avd_android (both classes)}
+  labels: source_asserted, host-level (sandbox background traffic labelled malware)
+  roles: [TRAIN, ENV_MATCHED (mobile half only)]
+  access: public git; scripts/00_fetch_matousek.sh
+  status: verified
+  canonical: data/canonical/matousek2024.csv.gz
+
+mta:
+  what: malware-traffic-analysis.net infection pcaps 2013-2026 (ja4lab already has 39 x 2024)
+  url: https://www.malware-traffic-analysis.net/
+  ioc_repo: https://github.com/malware-traffic/indicators   # starts 2025
+  env: real Windows victims in an AD lab, one victim per capture, per-post
+  labels: ioc_verified (35/39 of 2024) -> make FLOW-level via IOC C2 endpoints (T06)
+  roles: [EXT_TEST, TEMPORAL, ENV_MATCHED (within-capture contrast)]
+  access: zip password infected_YYYYMMDD; WinZip AES needs 7z
+  status: verified
+
+triage:
+  what: Hatching/Recorded Future Triage public sandbox; per-task pcap(ng) + JSON report
+  url: https://tria.ge/  (API docs https://tria.ge/docs/)
+  env: Windows 7/10/11 sandbox VMs (record the task's profile/OS per capture)
+  labels: sandbox_verdict + family tag; benign controls = low-score submissions of known software
+  roles: [TRAIN, TEMPORAL, ENV_MATCHED (sandbox-matched benign)]
+  access: Researcher account needed for an API key; anything you SUBMIT becomes public. Only search
+          and download existing public tasks; never submit samples.
+  status: verified (account requirement); pcap endpoint name -> check docs before T12
+
+anyrun:
+  what: ANY.RUN public submissions; pcaps downloadable per task in the web UI
+  url: https://app.any.run/submissions/
+  env: Windows sandbox VMs (record OS per task)
+  labels: verdict (malicious / suspicious / no threats detected) + tags
+  roles: [ENV_MATCHED (benign = 'no threats detected' runs of known software)]
+  access: free account, manual download; API is paid
+  status: verified
+
+ctu13:
+  what: 13 botnet scenarios with background/normal/botnet labels (2011)
+  url: https://mcfp.felk.cvut.cz/publicDatasets/CTU-13-Dataset/
+  env: CTU university network, Windows XP VMs
+  labels: per-flow, manual (botnet / C&C / normal / background)
+  roles: [TRAIN (Dataset A), ENV_MATCHED (normal+botnet same network)]
+  status: verified
+
+stratosphere_malware:
+  what: Malware Capture Facility Project captures (hundreds, 2013-2021+)
+  url: https://www.stratosphereips.org/datasets-malware   (files: https://mcfp.felk.cvut.cz/publicDatasets/)
+  env: Windows VMs at CTU
+  labels: capture-level malware name
+  roles: [TRAIN, TEMPORAL]
+  status: verified
+
+stratosphere_normal:
+  what: Normal captures of real users/hosts (incl. 2017 win-normal / kali-normal already in ja4lab)
+  url: https://www.stratosphereips.org/datasets-normal
+  roles: [TRAIN (benign)]
+  status: verified
+
+stratosphere_mixed:
+  what: captures with malware AND normal activity on the same host at the same time
+  url: https://www.stratosphereips.org/datasets-mixed
+  roles: [ENV_MATCHED]
+  status: verified
+
+ctu_sme_11:
+  what: 11 devices, 7 days (20-26 Feb 2023), SME network; ~160 GB pcaps, 99M expert-labelled flows
+  url: https://doi.org/10.5281/zenodo.7958258   (record 7958259)
+  env: IoT, desktop, mobile, bare-metal + VMs (Windows 7, Ubuntu 22.04 VMs ran malware)
+  labels: expert, two levels (high-level + descriptive), on Zeek flows -> join to ja4lab by 5-tuple+time
+  roles: [ENV_MATCHED, BENIGN_FP]
+  access: Zenodo, 80 GB compressed -> download per-device subsets
+  status: verified
+
+iot23:
+  what: 20 IoT malware + 3 benign IoT captures (Raspberry Pi), 2018-2019
+  url: https://www.stratosphereips.org/datasets-iot23
+  roles: [optional; little TLS]
+  status: verified
+
+android_mischief:
+  what: 7 Android RATs on real phones, operated by hand, with action logs
+  url: https://www.stratosphereips.org/android-mischief-dataset
+  roles: [EXT_TEST (mobile, real devices)]
+  status: verified
+
+ctu50_feel:
+  what: realistic benign traffic of 10 users for 5 days + 6 malware (Stratosphere FEEL project)
+  url: https://www.stratosphereips.org/feel-project
+  roles: [ENV_MATCHED, BENIGN_FP]
+  access: unknown -> email Stratosphere
+  status: mentioned in Stratosphere thesis list; availability unverified
+
+ustc_tfc2016:
+  what: 10 malware (from CTU 2011-2015) + 10 benign apps (IXIA BPS simulator) pcaps
+  url: https://github.com/yungshenglu/USTC-TFC2016
+  roles: [TRAIN (Dataset A rebuild) — expect strong shortcuts: benign half is simulator traffic]
+  status: memory
+
+cic_ids2017:
+  what: 5 days, benign Monday + attacks; documented labelling/feature errors (Engelen et al. 2021,
+        Liu et al. CNS 2022)
+  url: https://www.unb.ca/cic/datasets/ids-2017.html
+  roles: [BENIGN_FP (Monday), never as malware ground truth]
+  status: memory
+
+iscxvpn2016:
+  what: 150 pcaps of applications, VPN / non-VPN
+  url: https://www.unb.ca/cic/datasets/vpn.html
+  roles: [BENIGN_FP]
+  status: memory (dataset existence verified, URL from memory)
+
+cira_cic_dohbrw2020:
+  what: HTTPS browsing (benign TLS 1.3) + DoH; used as benign TLS 1.3 by RAID 2024 C2 paper
+  url: https://www.unb.ca/cic/datasets/dohbrw-2020.html
+  roles: [BENIGN_FP (TLS 1.3 browsers)]
+  status: memory
+
+cic_andmal2017:
+  what: Android malware + benign apps run on real phones, pcaps
+  url: https://www.unb.ca/cic/datasets/andmal2017.html
+  roles: [EXT_TEST (mobile)]
+  status: memory
+
+crossplatform:
+  what: user-generated traffic of 215 Android + 196 iOS apps (FlowPrint, NDSS 2020)
+  url: see https://github.com/Thijsvanede/FlowPrint (dataset pointers)
+  roles: [BENIGN_FP (mobile apps, iOS)]
+  status: verified (dataset); download location -> check README
+
+cstnet_tls13:
+  what: TLS 1.3 services dataset (ET-BERT, 2022)
+  url: via https://github.com/linwhitehat/ETA-Resource
+  roles: [BENIGN_FP (TLS 1.3)]
+  status: listed (verified); check if raw pcaps (needed) or only processed bytes
+
+cipherspectrum:
+  what: TLS 1.3 web traffic for 40 domains (2025)
+  url: via https://github.com/linwhitehat/ETA-Resource
+  roles: [BENIGN_FP]
+  status: listed (verified); check license/format
+
+cesnet_tls_year22:
+  what: ~507M TLS flows over 2022 from a national ISP, 180 web-service labels, 1:10 sampled;
+        flow features + packet sequences + some ClientHello fields incl. TLS_JA3
+  url: https://zenodo.org/records/10608607 ; loader: https://github.com/CESNET/cesnet-datazoo
+  roles: [BENIGN_FP (JA3-level false alarms at ISP scale), TEMPORAL drift]
+  caveat: JA3 not JA4 — check which ClientHello fields exist before promising JA4 features
+  status: verified
+
+ja4db:
+  what: community JA4 fingerprint database (~227k records in 2026 bot paper)
+  url: https://ja4db.com/  (download: https://ja4db.com/api/download/)
+  roles: [ENRICH — map fingerprints to libraries/apps; never labels]
+  status: verified
+
+foxio_ja4_tests:
+  what: reference pcaps + expected outputs in the FoxIO JA4 repo
+  url: https://github.com/FoxIO-LLC/ja4
+  roles: [EXTRACTOR_VALIDATION]  (ja4lab: JA4 150/151, JA4S 85/85, JA4H 69/71, JA4T 39/39)
+  status: verified
+
+discovery_lists:
+  - https://github.com/linwhitehat/ETA-Resource
+  - https://github.com/mmguero-dev/Malcolm-PCAP   (list of public pcap repositories)
+  - https://www.netresec.com/?page=PcapFiles        (memory)
+
+do_not_use:
+  hikari_2021: synthetic encrypted attacks/benign (https://zenodo.org/record/5199540) -> fails the "real traffic" rule
+  csv_only_datasets: any dataset without pcaps or ClientHello fields cannot produce JA4
+  mawi: backbone traces are payload-truncated (memory) -> no ClientHello
+  censys: server-side, today's internet; optional ENRICH of C2 servers only (research access needs a plan + affiliation)

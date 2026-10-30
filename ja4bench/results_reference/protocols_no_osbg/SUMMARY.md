@@ -1,0 +1,79 @@
+# Protocol results (generated; do not edit by hand)
+
+```json
+{
+  "utc": "2026-10-07T10:07:05+00:00",
+  "ja4bench": "0.3.0",
+  "python": "3.12.3",
+  "pandas": "3.0.2",
+  "numpy": "2.4.4",
+  "args": {
+    "inp": [
+      "data/canonical/matousek2024.csv.gz"
+    ],
+    "out": "results_reference/protocols_no_osbg",
+    "protocols": "P1_random,P2_capture,P3_ja4,P4_family,P5_temporal,P6_domain,P7_source,P8_env_matched",
+    "combos": "lookup:ja4,xgb:ja4_components,xgb:env_only",
+    "domain_col": "platform",
+    "k": 5,
+    "seed": 42,
+    "boot": 1000,
+    "tcp_only": true,
+    "exclude_flag": [
+      "flag_no_capture_id",
+      "flag_os_background"
+    ],
+    "only_env": []
+  },
+  "input_sha256": {
+    "data/canonical/matousek2024.csv.gz": "1888415bff4645b7d02e06bb0d8a7902fdf7af0f47ec3448e825eea7d41283c7"
+  },
+  "filters": [
+    "label in {0,1}: 30664 -> 21127",
+    "tcp-only: 21127 -> 20148",
+    "exclude flag_no_capture_id: 20148 -> 18704",
+    "exclude flag_os_background: 18704 -> 15133"
+  ],
+  "rows_used": 15133,
+  "captures_used": 980,
+  "train_runtime_s": 69,
+  "sklearn": "1.8.0",
+  "xgboost": "3.4.1",
+  "summarised_from": "oof.csv.gz"
+}
+```
+
+Flow-level metrics pooled over out-of-fold predictions; [95% CI] = bootstrap over captures.
+cap_alert_benign = share of BENIGN captures with >=1 flow scored >= 0.5 (host-level false alarms).
+seen_ja4 = share of test rows whose exact JA4 occurred in training.
+fold ROC-AUC = mean (min) of per-fold ROC-AUC. When it differs from the pooled value, trust the
+per-fold value: pooling mixes folds with different score scales. For P5/P6/P7 read folds.csv.
+
+| protocol | combo | ROC-AUC pooled | fold ROC-AUC | PR-AUC | F1 | recall | FPR | cap ROC-AUC | cap_alert_benign | seen_ja4 | n_test | captures |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| P1_random | lookup:ja4 | 0.918 [0.899, 0.935] | 0.919 (0.915) | 0.966 [0.953, 0.975] | 0.915 [0.891, 0.936] | 0.943 | 0.324 | 0.959 | 0.700 | 1.00 | 15133 | 980 |
+| P1_random | xgb:ja4_components | 0.918 [0.898, 0.936] | 0.919 (0.915) | 0.966 [0.954, 0.975] | 0.871 [0.833, 0.902] | 0.815 | 0.153 | 0.958 | 0.263 | 1.00 | 15133 | 980 |
+| P1_random | xgb:env_only | 0.828 [0.780, 0.870] | 0.832 (0.824) | 0.934 [0.896, 0.961] | 0.790 [0.721, 0.846] | 0.661 | 0.035 | 0.871 | 0.025 | 1.00 | 15133 | 980 |
+| P2_capture | lookup:ja4 | 0.899 [0.873, 0.923] | 0.904 (0.878) | 0.956 [0.941, 0.969] | 0.908 [0.882, 0.931] | 0.931 | 0.328 | 0.954 | 0.691 | 0.99 | 15133 | 980 |
+| P2_capture | xgb:ja4_components | 0.900 [0.876, 0.924] | 0.906 (0.882) | 0.958 [0.945, 0.970] | 0.860 [0.830, 0.884] | 0.803 | 0.177 | 0.953 | 0.328 | 0.99 | 15133 | 980 |
+| P2_capture | xgb:env_only | 0.812 [0.754, 0.857] | 0.831 (0.797) | 0.929 [0.888, 0.958] | 0.790 [0.721, 0.845] | 0.661 | 0.035 | 0.860 | 0.025 | 0.99 | 15133 | 980 |
+| P3_ja4 | lookup:ja4 | 0.255 [0.221, 0.291] | 0.500 (0.500) | 0.630 [0.560, 0.701] | 0.846 [0.803, 0.884] | 1.000 | 1.000 | 0.173 | 1.000 | 0.00 | 15133 | 980 |
+| P3_ja4 | xgb:ja4_components | 0.735 [0.679, 0.788] | 0.708 (0.500) | 0.877 [0.825, 0.917] | 0.806 [0.752, 0.857] | 0.763 | 0.360 | 0.855 | 0.613 | 0.00 | 15133 | 980 |
+| P3_ja4 | xgb:env_only | 0.744 [0.673, 0.807] | 0.833 (0.682) | 0.916 [0.873, 0.949] | 0.789 [0.716, 0.848] | 0.660 | 0.035 | 0.771 | 0.025 | 0.00 | 15133 | 980 |
+| P4_family | lookup:ja4 | 0.805 [0.769, 0.842] | 0.833 (0.722) | 0.921 [0.898, 0.943] | 0.864 [0.824, 0.897] | 0.928 | 0.606 | 0.911 | 0.800 | 0.96 | 15133 | 980 |
+| P4_family | xgb:ja4_components | 0.817 [0.781, 0.852] | 0.838 (0.719) | 0.927 [0.907, 0.946] | 0.846 [0.813, 0.873] | 0.815 | 0.308 | 0.925 | 0.481 | 0.96 | 15133 | 980 |
+| P4_family | xgb:env_only | 0.835 [0.780, 0.878] | 0.826 (0.780) | 0.937 [0.904, 0.963] | 0.790 [0.717, 0.849] | 0.661 | 0.035 | 0.861 | 0.025 | 0.96 | 15133 | 980 |
+| P6_domain | lookup:ja4 | 0.233 [0.177, 0.291] | 0.493 (0.452) | 0.632 [0.571, 0.691] | 0.812 [0.776, 0.841] | 0.927 | 0.975 | 0.254 | 0.981 | 0.31 | 15133 | 980 |
+| P6_domain | xgb:ja4_components | 0.191 [0.149, 0.242] | 0.550 (0.237) | 0.602 [0.531, 0.677] | 0.399 [0.336, 0.457] | 0.327 | 0.858 | 0.266 | 0.869 | 0.31 | 15133 | 980 |
+| P6_domain | xgb:env_only | 0.251 [0.194, 0.308] | 0.500 (0.500) | 0.658 [0.595, 0.721] | 0.846 [0.804, 0.884] | 1.000 | 1.000 | 0.227 | 1.000 | 0.31 | 15133 | 980 |
+| P8_env_matched | lookup:ja4 | 0.908 [0.890, 0.926] | 0.911 (0.888) | 0.927 [0.905, 0.944] | 0.854 [0.825, 0.879] | 0.905 | 0.278 | 0.951 | 0.657 | 1.00 | 8819 | 532 |
+| P8_env_matched | xgb:ja4_components | 0.909 [0.891, 0.927] | 0.912 (0.889) | 0.928 [0.906, 0.945] | 0.830 [0.806, 0.851] | 0.802 | 0.171 | 0.951 | 0.530 | 1.00 | 8819 | 532 |
+| P8_env_matched | xgb:env_only | 0.584 [0.513, 0.651] | 0.605 (0.526) | 0.654 [0.568, 0.743] | 0.388 [0.288, 0.480] | 0.247 | 0.037 | 0.581 | 0.027 | 1.00 | 8819 | 532 |
+
+## Skipped folds
+
+| protocol | fold | reason |
+|---|---|---|
+| P5_temporal | train<= 2022 | train fold has one class |
+| P5_temporal | train<= 2023 | train fold has one class |
+| P7_source | all | only one value of source: ['matousek2024'] |

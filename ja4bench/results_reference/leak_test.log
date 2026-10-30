@@ -1,0 +1,81 @@
+P2_capture      fold0                        xgb:ja4_components     roc=0.885 f1=0.893 fpr=0.222 seen=0.99 (4s)
+P2_capture      fold0                        xgbLEAK:ja4_components roc=0.893 f1=0.898 fpr=0.216 seen=0.99 (2s)
+P2_capture      fold1                        xgb:ja4_components     roc=0.892 f1=0.872 fpr=0.227 seen=0.99 (2s)
+P2_capture      fold1                        xgbLEAK:ja4_components roc=0.897 f1=0.878 fpr=0.226 seen=0.99 (2s)
+P2_capture      fold2                        xgb:ja4_components     roc=0.920 f1=0.884 fpr=0.155 seen=0.97 (2s)
+P2_capture      fold2                        xgbLEAK:ja4_components roc=0.929 f1=0.885 fpr=0.152 seen=0.97 (2s)
+P2_capture      fold3                        xgb:ja4_components     roc=0.931 f1=0.896 fpr=0.127 seen=1.00 (2s)
+P2_capture      fold3                        xgbLEAK:ja4_components roc=0.932 f1=0.896 fpr=0.127 seen=1.00 (2s)
+P2_capture      fold4                        xgb:ja4_components     roc=0.926 f1=0.884 fpr=0.155 seen=1.00 (3s)
+P2_capture      fold4                        xgbLEAK:ja4_components roc=0.927 f1=0.884 fpr=0.158 seen=1.00 (2s)
+P3_ja4          fold0                        xgb:ja4_components     roc=0.604 f1=0.917 fpr=0.803 seen=0.00 (2s)
+P3_ja4          fold0                        xgbLEAK:ja4_components roc=0.643 f1=0.922 fpr=0.753 seen=0.00 (2s)
+P3_ja4          fold1                        xgb:ja4_components     roc=0.816 f1=0.923 fpr=0.292 seen=0.00 (2s)
+P3_ja4          fold1                        xgbLEAK:ja4_components roc=0.885 f1=0.981 fpr=0.317 seen=0.00 (2s)
+P3_ja4          fold2                        xgb:ja4_components     roc=0.960 f1=0.934 fpr=0.458 seen=0.00 (2s)
+P3_ja4          fold2                        xgbLEAK:ja4_components roc=0.970 f1=0.949 fpr=0.044 seen=0.00 (2s)
+P3_ja4          fold3                        xgb:ja4_components     roc=0.919 f1=0.870 fpr=0.033 seen=0.00 (2s)
+P3_ja4          fold3                        xgbLEAK:ja4_components roc=0.959 f1=0.938 fpr=0.039 seen=0.00 (2s)
+P3_ja4          fold4                        xgb:ja4_components     roc=0.739 f1=0.066 fpr=0.003 seen=0.00 (2s)
+P3_ja4          fold4                        xgbLEAK:ja4_components roc=0.787 f1=0.245 fpr=0.003 seen=0.00 (2s)
+summarised P2_capture xgb:ja4_components
+summarised P2_capture xgbLEAK:ja4_components
+summarised P3_ja4 xgb:ja4_components
+summarised P3_ja4 xgbLEAK:ja4_components
+# Protocol results (generated; do not edit by hand)
+
+```json
+{
+  "utc": "2026-10-07T10:05:37+00:00",
+  "ja4bench": "0.3.0",
+  "python": "3.12.3",
+  "pandas": "3.0.2",
+  "numpy": "2.4.4",
+  "args": {
+    "inp": [
+      "data/canonical/matousek2024.csv.gz"
+    ],
+    "out": "results_reference/leak_test",
+    "protocols": "P2_capture,P3_ja4",
+    "combos": "xgb:ja4_components,xgbLEAK:ja4_components",
+    "domain_col": "platform",
+    "k": 5,
+    "seed": 42,
+    "boot": 1000,
+    "tcp_only": true,
+    "exclude_flag": [
+      "flag_no_capture_id"
+    ],
+    "only_env": []
+  },
+  "input_sha256": {
+    "data/canonical/matousek2024.csv.gz": "1888415bff4645b7d02e06bb0d8a7902fdf7af0f47ec3448e825eea7d41283c7"
+  },
+  "filters": [
+    "label in {0,1}: 30664 -> 21127",
+    "tcp-only: 21127 -> 20148",
+    "exclude flag_no_capture_id: 20148 -> 18704"
+  ],
+  "rows_used": 18704,
+  "captures_used": 1421,
+  "train_runtime_s": 44,
+  "sklearn": "1.8.0",
+  "xgboost": "3.4.1"
+}
+```
+
+Flow-level metrics pooled over out-of-fold predictions; [95% CI] = bootstrap over captures.
+cap_alert_benign = share of BENIGN captures with >=1 flow scored >= 0.5 (host-level false alarms).
+seen_ja4 = share of test rows whose exact JA4 occurred in training.
+
+| protocol | combo | ROC-AUC | PR-AUC | F1 | recall | FPR | cap ROC-AUC | cap_alert_benign | seen_ja4 | n_test | captures |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| P2_capture | xgb:ja4_components | 0.908 [0.882, 0.931] | 0.967 [0.955, 0.976] | 0.886 [0.863, 0.903] | 0.835 | 0.177 | 0.939 | 0.306 | 0.99 | 18704 | 1421 |
+| P2_capture | xgbLEAK:ja4_components | 0.912 [0.885, 0.935] | 0.969 [0.959, 0.978] | 0.888 [0.866, 0.906] | 0.839 | 0.176 | 0.942 | 0.302 | 0.99 | 18704 | 1421 |
+| P3_ja4 | xgb:ja4_components | 0.857 [0.827, 0.881] | 0.943 [0.922, 0.960] | 0.847 [0.825, 0.867] | 0.785 | 0.239 | 0.917 | 0.367 | 0.00 | 18704 | 1421 |
+| P3_ja4 | xgbLEAK:ja4_components | 0.918 [0.895, 0.936] | 0.968 [0.957, 0.977] | 0.889 [0.867, 0.907] | 0.837 | 0.162 | 0.947 | 0.290 | 0.00 | 18704 | 1421 |
+
+## Skipped folds
+
+none
+

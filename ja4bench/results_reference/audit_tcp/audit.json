@@ -1,0 +1,29 @@
+{
+  "rows_total": 26625,
+  "rows_labelled": 18704,
+  "rows_excluded_by_label": {
+    "ads": 7834,
+    "unknown": 87
+  },
+  "captures_total": 1421,
+  "captures_mixed_class": 0,
+  "D2_share_rows_in_single_class_env": 0.5236313088109495,
+  "D2_cramers_v_env_label": 0.5659704410865489,
+  "D3_distinct_ja4": 146,
+  "D3_single_class_ja4_share": 0.726027397260274,
+  "D3_rows_in_single_class_ja4": 0.1460115483319076,
+  "D3_label_conflict_floor_all": 0.11184773310521813,
+  "D4_envs_with_both_classes": [
+    "hashapp_avd_android"
+  ],
+  "D4_label_conflict_floor_env_matched": 0.17115600448933782,
+  "D4_malicious_rows_with_benign_ja4_same_env": {
+    "hashapp_avd_android": 0.8923383084577114
+  },
+  "D5_lookup_coverage_cross_domain": {
+    "desktop->mobile": 0.1759820426487093,
+    "mobile->desktop": 0.34929548703287727
+  },
+  "D6_malicious_rows_to_os_background": 3465,
+  "D6_share_of_malicious_rows": 0.23791540785498488
+}

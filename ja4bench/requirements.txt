@@ -1,0 +1,6 @@
+# Pinned to the versions used to produce results_reference/ (and Vighnesh's baseline: XGBoost 3.4.1)
+pandas>=2.2
+numpy>=1.26
+scikit-learn>=1.5
+xgboost==3.4.1
+pyyaml>=6.0

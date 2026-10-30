@@ -1,0 +1,4 @@
+{
+  "note": "train_meta.json absent; summarised from oof.csv.gz",
+  "summarised_from": "oof.csv.gz"
+}

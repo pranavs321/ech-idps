@@ -1,0 +1,39 @@
+{
+  "utc": "2026-10-07T10:07:05+00:00",
+  "ja4bench": "0.3.0",
+  "python": "3.12.3",
+  "pandas": "3.0.2",
+  "numpy": "2.4.4",
+  "args": {
+    "inp": [
+      "data/canonical/matousek2024.csv.gz"
+    ],
+    "out": "results_reference/protocols_no_osbg",
+    "protocols": "P1_random,P2_capture,P3_ja4,P4_family,P5_temporal,P6_domain,P7_source,P8_env_matched",
+    "combos": "lookup:ja4,xgb:ja4_components,xgb:env_only",
+    "domain_col": "platform",
+    "k": 5,
+    "seed": 42,
+    "boot": 1000,
+    "tcp_only": true,
+    "exclude_flag": [
+      "flag_no_capture_id",
+      "flag_os_background"
+    ],
+    "only_env": []
+  },
+  "input_sha256": {
+    "data/canonical/matousek2024.csv.gz": "1888415bff4645b7d02e06bb0d8a7902fdf7af0f47ec3448e825eea7d41283c7"
+  },
+  "filters": [
+    "label in {0,1}: 30664 -> 21127",
+    "tcp-only: 21127 -> 20148",
+    "exclude flag_no_capture_id: 20148 -> 18704",
+    "exclude flag_os_background: 18704 -> 15133"
+  ],
+  "rows_used": 15133,
+  "captures_used": 980,
+  "train_runtime_s": 69,
+  "sklearn": "1.8.0",
+  "xgboost": "3.4.1"
+}

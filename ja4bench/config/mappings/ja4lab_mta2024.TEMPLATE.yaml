@@ -1,0 +1,26 @@
+# Mapping: ja4lab flow table (MTA 2024) -> canonical table.  Used by T07.
+# 1) Copy to ja4lab_mta2024.yaml   2) run: head -1 <ja4lab csv>   3) replace every FILL_ME with a REAL
+#    column name from that header. Never guess a column: the adapter stops if a name does not exist.
+columns:
+  capture_id: FILL_ME        # pcap path or basename column (e.g. 'pcap')
+  ja4: FILL_ME               # JA4 (hashed) column
+  sni: FILL_ME
+  src_ip: FILL_ME
+  dst_ip: FILL_ME
+  dst_port: FILL_ME
+  ja4t: FILL_ME              # optional: delete the line if absent
+  ttl: FILL_ME               # optional
+  win: FILL_ME               # optional
+  ts: FILL_ME                # optional (flow start time)
+constants:
+  source: mta2024
+  vantage: lan_tap
+# per-capture environment metadata (T05): capture_id,env_group,platform,os,os_build,year,family,...
+# capture_id values must match the capture_id column above BEFORE the 'source:' prefix is added.
+per_capture_csv: data/meta/capture_meta_mta2024.csv
+label:
+  column: label_flow          # the NEW flow-level label column created in T06 (never 'label')
+  map: {"1": 1, "0": 0, "-1": -1}
+  basis_column: label_flow_basis
+  basis_map: {ioc_c2: ioc_verified, os_background: os_background, unlabelled: unknown}
+  default_basis: unknown

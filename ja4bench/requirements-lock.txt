@@ -1,0 +1,8 @@
+# EXACT versions used to produce results_reference/ (Python 3.12). scripts/check_env.py enforces them.
+xgboost==3.4.1
+scikit-learn==1.8.0
+pandas==3.0.2
+numpy==2.4.4
+scipy==1.17.1
+PyYAML==6.0.3
+matplotlib==3.10.8
