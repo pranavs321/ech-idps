@@ -1,0 +1,10 @@
+data/raw/
+data/interim/
+data/processed/
+data/ti/
+third_party/
+results/
+results_SMOKE/
+__pycache__/
+.venv/
+data/meta/tranco.csv

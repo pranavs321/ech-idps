@@ -4,3 +4,13 @@ artifacts/
 results/
 *.o
 .venv/
+.DS_Store
+data/raw/
+*.pcap
+*.pcapng
+*.zip
+third_party/
+ja4bench/
+ja4lab/**/data/
+ja4lab/**/.venv/
+ja4lab/**/__pycache__/
