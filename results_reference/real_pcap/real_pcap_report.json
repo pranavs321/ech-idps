@@ -1,0 +1,83 @@
+{
+  "pcaps": 894,
+  "pcaps_failed": 0,
+  "sensor_flows": 115830,
+  "labelled_connections": 61605,
+  "matched_by_sensor": 60691,
+  "matched_with_ja4": 60689,
+  "ja4_agrees_with_reference_extractor": 1.0,
+  "flows_with_reversed_direction": 1,
+  "evaluated": {
+    "connections": 40644,
+    "malicious": 32671,
+    "benign": 7973,
+    "captures": 744,
+    "declared_class_counts": {
+      "safari": 26862,
+      "firefox": 12460,
+      "chrome": 1228,
+      "mobile_app": 93,
+      "unknown": 1
+    },
+    "after_cap": {
+      "connections": 19288,
+      "malicious": 11647
+    }
+  },
+  "capture_dissonance_classes_fitted": {
+    "profiles": 3.0,
+    "stacks": 15.0
+  },
+  "capture: tier2_14d+host_context minus tier2_14d (mean, 95% CI over captures)": {
+    "tpr_at_1pct_fpr": [
+      0.11182506373376125,
+      0.06467885886623063,
+      0.17656620286064414
+    ],
+    "auc": [
+      0.007107581641234798,
+      0.003785809901097442,
+      0.01121902504580434
+    ]
+  },
+  "capture: tier2_14d+host_context_causal minus tier2_14d (mean, 95% CI over captures)": {
+    "tpr_at_1pct_fpr": [
+      0.09209954963896638,
+      0.05467215994140637,
+      0.1468642575690376
+    ],
+    "auc": [
+      0.006645396443804458,
+      0.00358086530443692,
+      0.010401427902366577
+    ]
+  },
+  "source_dissonance_classes_fitted": {
+    "profiles": 3.0,
+    "stacks": 11.0
+  },
+  "source: tier2_14d+host_context minus tier2_14d (mean, 95% CI over captures)": {
+    "tpr_at_1pct_fpr": [
+      0.27098920299263424,
+      0.2042183634352793,
+      0.34811665724529217
+    ],
+    "auc": [
+      0.0959303779813747,
+      0.07108891874135613,
+      0.12542227688387256
+    ]
+  },
+  "source: tier2_14d+host_context_causal minus tier2_14d (mean, 95% CI over captures)": {
+    "tpr_at_1pct_fpr": [
+      0.12474362736236688,
+      0.06939646787430731,
+      0.1857880351476976
+    ],
+    "auc": [
+      0.07245988616682282,
+      0.05219627924859915,
+      0.09568396620321244
+    ]
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "captures": 1052,
+  "hosts": 1088,
+  "tls_connections_internal_to_external": 88085,
+  "by_source_tier": {
+    "mta13_16": {
+      "unknown": 1470,
+      "gold_mal": 838,
+      "benign": 254,
+      "weak_mal": 34,
+      "conflict": 14
+    },
+    "mta17_18": {
+      "gold_mal": 15206,
+      "unknown": 10311,
+      "weak_mal": 1131,
+      "benign": 529,
+      "conflict": 78
+    },
+    "mta19_21": {
+      "gold_mal": 22844,
+      "unknown": 14051,
+      "weak_mal": 13478,
+      "benign": 7291,
+      "conflict": 556
+    }
+  },
+  "by_year_labelled": {
+    "2013": {
+      "malicious": 94,
+      "benign": 64,
+      "captures": 3
+    },
+    "2014": {
+      "malicious": 348,
+      "benign": 24,
+      "captures": 40
+    },
+    "2015": {
+      "malicious": 217,
+      "benign": 137,
+      "captures": 40
+    },
+    "2016": {
+      "malicious": 213,
+      "benign": 29,
+      "captures": 51
+    },
+    "2017": {
+      "malicious": 1550,
+      "benign": 113,
+      "captures": 172
+    },
+    "2018": {
+      "malicious": 14787,
+      "benign": 416,
+      "captures": 222
+    },
+    "2019": {
+      "malicious": 5009,
+      "benign": 1066,
+      "captures": 122
+    },
+    "2020": {
+      "malicious": 4545,
+      "benign": 2566,
+      "captures": 134
+    },
+    "2021": {
+      "malicious": 26768,
+      "benign": 3659,
+      "captures": 111
+    }
+  },
+  "gold_evidence": {
+    "mta_ioc_ip": 19575,
+    "maltrail_dom": 16097,
+    "sslbl_cert": 13977,
+    "mta_ioc_domain": 13313,
+    "maltrail_ip": 10596,
+    "mta_page": 5976,
+    "feodo_ip": 1552
+  },
+  "ja4_tshark_agreement": 0.9943917806664018,
+  "natural_mimicry_hostname_only": {
+    "malicious_rows": 32777,
+    "share_sharing_exact_ja4_with_benign_on_same_host": 0.46462458431217013,
+    "hosts_with_both_classes": 199,
+    "capture_weighted_share_hosts_with_both_classes": 0.6657226499288016,
+    "row_share_hosts_with_both_classes": 0.5549522629545951
+  },
+  "tls_version_by_class": {
+    "benign": {
+      "00": 68,
+      "10": 96,
+      "11": 1,
+      "12": 6696,
+      "13": 1213,
+      "s3": 0
+    },
+    "malicious": {
+      "00": 12,
+      "10": 12032,
+      "11": 1,
+      "12": 40298,
+      "13": 834,
+      "s3": 354
+    }
+  },
+  "bare_ip_share_by_class": {
+    "benign": 0.0,
+    "malicious": 0.38770058470792623
+  }
+}

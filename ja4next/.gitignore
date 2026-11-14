@@ -1,0 +1,10 @@
+data/raw/
+data/interim/
+data/labels/maltrail/
+data/labels/*.gz
+data/manifests/mta_html_cache/
+.venv/
+logs/*.pid
+__pycache__/
+*.pyc
+trash/

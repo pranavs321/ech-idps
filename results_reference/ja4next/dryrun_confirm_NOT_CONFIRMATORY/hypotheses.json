@@ -1,0 +1,39 @@
+{
+  "H1_HR_improves_tpr_at_1pct": {
+    "diff_mean_ci": [
+      0.624166074278154,
+      0.3677141512112408,
+      0.8017893022633162
+    ],
+    "supported": true
+  },
+  "H2_HR_improves_auc": {
+    "diff_mean_ci": [
+      0.05917927565266155,
+      0.034804256424240836,
+      0.08725140989110135
+    ],
+    "supported": true
+  },
+  "H3_env_alone_below_0.6_auc": {
+    "auc": 0.7501716650521586,
+    "supported": false
+  },
+  "H4_mimicry_share_ge_0.50": {
+    "share": 0.5857442752179595,
+    "supported": true
+  },
+  "H5_triage_hit1": {
+    "hr": 0.9113924050632911,
+    "base": 0.9240506329113924,
+    "diff_ci": [
+      -0.07594936708860767,
+      0.05063291139240511
+    ],
+    "supported": false
+  },
+  "H6_dest_share_rule_auc_ge_0.85": {
+    "auc": 0.9609781063905968,
+    "supported": true
+  }
+}

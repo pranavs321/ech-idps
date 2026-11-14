@@ -359,8 +359,10 @@ def _assemble(rng: random.Random, src: str, dst: str, dport: int,
               hello: bytes, t0: float) -> Flow:
     from idps.module2_sensor.flow import canonical_key
 
-    key, _ = canonical_key(src, rng.randint(32768, 60999), dst, dport)
-    flow = Flow(key=key, start_ts=t0, last_ts=t0)
+    sport = rng.randint(32768, 60999)
+    key, _ = canonical_key(src, sport, dst, dport)
+    flow = Flow(key=key, start_ts=t0, last_ts=t0, initiator=(src, sport),
+                initiator_certain=True)
     t = t0
     for i, (gap, size, forward) in enumerate(zip(gaps, sizes, dirs)):
         t += gap / 1000.0

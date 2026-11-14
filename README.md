@@ -10,6 +10,24 @@ This repository is the working implementation of the S7 project described in
 the three novelty pillars are implemented and measured, and the whole thing
 executes on a laptop with no special privileges.
 
+> **Status, 14 Nov 2026 (read this first).** Every number further down this page comes
+> from the simulated corpus. The first measurements on real captures are in
+> [`docs/REAL_TRAFFIC_RESULTS.md`](docs/REAL_TRAFFIC_RESULTS.md). In short, on 894 public
+> same-host infection captures (2013-2021, exploratory):
+> - the sensor had six bugs that only real pcaps expose; fixed, and it now reproduces
+>   148 of 148 FoxIO reference JA4 values and agrees 100% with an independent extractor;
+> - Tier 2 on the 14-D vector reaches AUC 0.990 within a source and 0.877 on an unseen one;
+> - D(x) with the hand-written browser profiles does not work on real traffic
+>   (AUC 0.262 on an unseen source); malware there uses the operating system's TLS
+>   library, it does not impersonate a browser;
+> - the new **host context** input (`src/idps/module2_sensor/host_context.py`), which
+>   describes each connection against its own host and needs no SNI, lifts detection at
+>   1% false alarms on an unseen source from 0.550 to 0.813 (causal form: 0.669).
+>
+> The pipeline that downloads, labels and evaluates the real captures is in
+> [`ja4next/`](ja4next/README.md), with Antigravity skills and a pre-registration
+> addendum for the held-back 2022-2026 captures.
+
 ---
 
 ## TL;DR — run everything with one command

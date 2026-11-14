@@ -1,0 +1,3 @@
+year,date,post_url,kind,zip_name,file,sha256,bytes
+2018,2018-07-02,https://www.malware-traffic-analysis.net/2018/07/02/index2.html,pcap,2018-07-02-Trickbot-infection-traffic.pcap.zip,data/raw/mta/2018-07-02/2018-07-02-Trickbot-infection-traffic.pcap,6262cf4d3a9b146911a7e3a95cb4b170ab21cccf496dab2c1410264c7c5563fa,18881128
+2018,2018-04-11,https://www.malware-traffic-analysis.net/2018/04/11/index2.html,pcap,2018-04-11-Hancitor-infection-with-Zeus-Panda-Banker.pcap.zip,data/raw/mta/2018-04-11/2018-04-11-Hancitor-infection-with-Zeus-Panda-Banker.pcap,b2f0e78c21240463337225051971814b142d2be16f367a081d50901b98536c27,2645333
