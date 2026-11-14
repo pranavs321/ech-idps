@@ -110,3 +110,9 @@ Reference copies of the ja4next result files are in `results_reference/ja4next/`
 - **TLS version alone is not a shortcut.** A depth-1 tree on the version scores AUC 0.272 on unseen eras: it inverts across eras.
 - **Group-robust training gives no reliable gain.** A GroupDRO-style reweighting over era x label groups moves the worst-era AUC from 0.850 to 0.859 and lowers the overall AUC from 0.972 to 0.965. Not a reason to change the method.
 - **Variance decomposition is a caveat.** Between-era share of raw behaviour features is 0.000 to 0.083, so eras barely differ in those features. Host-relative z-scores still show 0.10 to 0.26 between-capture share, so they are not fully capture-free.
+
+## New environment: MTA training exercises 2019-2021 (14 Nov, exploratory, NOT a clean test)
+- 34 exercise pcaps (multi-host Windows AD networks, usually one infected host plus clean hosts), 4,484 TLS connections, 29 captures with hostname-only TLS.
+- Models trained on the main corpus (2013-2021) and scored on these labelled connections (`results_reference/ja4next_extras/exercise_transfer.csv`): TLS+BEH AUC 0.992, HR+TLS+BEH AUC 0.998 (TPR at 1% FPR 0.882 and 0.976).
+- **Why this is not a clean result.** Only 11 of 29 captures contain any malicious label. Labels are from indicator lists (295 weak, 36 gold). The answer keys are on separate pages and were not used. The score mainly reflects which captures are infected versus clean, not an independent measure of detection. The gold-only subset (36 connections) is too small to score.
+- What it does show: the pipeline runs end to end on a new environment with no code changes. A proper test needs the exercise answer keys (page2.html) parsed into analyst labels.
