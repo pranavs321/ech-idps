@@ -75,6 +75,9 @@ class DissonanceConfig:
     reg_covar: float = 1e-4
     target_fpr: float = 0.005
     random_state: int = 7
+    # Benign flows a class needs before it gets its own density. Lower it when
+    # the classes are learned TLS stacks on a small real corpus.
+    min_samples_per_class: int = MIN_SAMPLES_PER_CLASS
 
 
 class DissonanceModel:
@@ -111,7 +114,7 @@ class DissonanceModel:
 
         for cls in sorted(set(declared[benign_mask])):
             sel = benign_mask & (declared == cls)
-            if sel.sum() < MIN_SAMPLES_PER_CLASS:
+            if sel.sum() < self.config.min_samples_per_class:
                 continue
             k = max(1, min(self.config.n_components, sel.sum() // 40))
             gm = GaussianMixture(

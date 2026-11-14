@@ -20,7 +20,7 @@ import numpy as np
 
 from ..features import N_FEATURES, SPLT_PACKETS, INDEX_BY_NAME
 from ..ja4 import (ClientHelloInfo, compute_ja4, declared_class,
-                   parse_client_hello, profile_similarity)
+                   parse_client_hello, profile_similarity, stack_key)
 from .flow import Flow
 
 # A gap longer than this ends a burst. Chosen to sit above typical intra-page
@@ -42,10 +42,14 @@ class FlowRecord:
     declared: str                             # class the connection claims
     declared_confidence: float
     ja4: Optional[str] = None
+    stack: Optional[str] = None               # client TLS stack key (ja4.stack_key)
     has_ech: bool = False
+    has_sni: bool = False
     src_ip: str = ""                          # enforcement-plane only
+    src_port: int = 0                         # enforcement-plane only
     dst_ip: str = ""
     dst_port: int = 0
+    start_ts: float = 0.0
     duration: float = 0.0
     n_packets: int = 0
     truth: Optional[dict] = field(default=None)
@@ -169,12 +173,14 @@ def extract(flow: Flow) -> Optional[FlowRecord]:
         cls, conf = declared_class(info)
         v[ix["ja4_similarity"]] = profile_similarity(info, cls)
         ja4, has_ech = compute_ja4(info), info.has_ech
+        stack, has_sni = stack_key(info), info.has_sni
     else:
         # No handshake observed (mid-flow capture, or a resumed session).
         # "unknown" is its own class with its own behavioural model -- we do
         # not silently assume a browser, because that would hand the attacker a
         # free class by simply withholding the hello.
         cls, conf, ja4, has_ech = "unknown", 0.0, None, False
+        stack, has_sni = None, False
         v[ix["ja4_similarity"]] = 0.0
 
     # --- f14: flow context -------------------------------------------------
@@ -185,10 +191,14 @@ def extract(flow: Flow) -> Optional[FlowRecord]:
         declared=cls,
         declared_confidence=float(conf),
         ja4=ja4,
+        stack=stack,
         has_ech=has_ech,
+        has_sni=has_sni,
         src_ip=flow.src_ip,
+        src_port=flow.src_port,
         dst_ip=flow.dst_ip,
-        dst_port=flow.key[3],
+        dst_port=flow.dst_port,
+        start_ts=flow.start_ts,
         duration=flow.duration,
         n_packets=flow.total_packets,
         truth=flow.truth,
