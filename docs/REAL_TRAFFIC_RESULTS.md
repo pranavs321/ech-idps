@@ -104,3 +104,9 @@ python3 tests/test_real_pcap_sensor.py && python3 tests/test_host_context.py
 ```
 
 Reference copies of the ja4next result files are in `results_reference/ja4next/` (the `results/` folders are git-ignored).
+
+## Additional analyses (14 Nov, exploratory; `ja4next/scripts/extras.py`, `results_reference/ja4next_extras/`)
+- **TLS version matters.** On TLS 1.3 connections, host context lifts TPR at 1% FPR from 0.030 to 0.631 (AUC 0.834 to 0.945). On TLS 1.2 it lifts 0.079 to 0.807. The TLS 1.0 stratum is 94% malicious, so its benign side is too small to read.
+- **TLS version alone is not a shortcut.** A depth-1 tree on the version scores AUC 0.272 on unseen eras: it inverts across eras.
+- **Group-robust training gives no reliable gain.** A GroupDRO-style reweighting over era x label groups moves the worst-era AUC from 0.850 to 0.859 and lowers the overall AUC from 0.972 to 0.965. Not a reason to change the method.
+- **Variance decomposition is a caveat.** Between-era share of raw behaviour features is 0.000 to 0.083, so eras barely differ in those features. Host-relative z-scores still show 0.10 to 0.26 between-capture share, so they are not fully capture-free.

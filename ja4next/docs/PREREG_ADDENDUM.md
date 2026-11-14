@@ -3,7 +3,7 @@
 Status: DRAFT. Freezing = the guide approves this file, then a team member runs
 `shasum -a 256 docs/PREREG_ADDENDUM.md src/ja4next/*.py > docs/PREREG_FROZEN.sha256` and commits it.
 After that, no code, feature, label rule, seed or threshold may change before the confirmatory run.
-Deviations go into `docs/DEVIATIONS.md` with date and reason (a practice adopted from a concurrent student project, credited in the paper).
+Deviations go into `docs/DEVIATIONS.md` with date and reason (adopted from SCBD-R's practice, credited).
 
 ## Data
 - **Exploratory (training) data:** malware-traffic-analysis.net (MTA) posts 2013-2021, plus any other source

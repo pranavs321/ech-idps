@@ -9,8 +9,7 @@ the **specific design and its measurement**:
 2. A measured invariance claim: host-constant nuisances (MSS, TTL, VPN egress, latency, padding) cancel by
    construction; we test it with ELI, source identifiability and a nuisance-injection stress test.
 3. The evaluation design: leave-one-source-out and leave-one-year-out on same-host captures, with
-   domain-generalisation baselines, a concurrent student project's per-stack conformal design (personal
-   communication), and environment-matched negative bags.
+   domain-generalisation baselines, SCBD-R's per-stack conformal design, and environment-matched negative bags.
 4. Negative results reported as findings: sandbox-to-real collapse; per-JA4 conformal thresholds help on simulated
    but hurt on real mimicry; a label-free host x JA4 outlier score fails because malware connections are the
    *majority, self-similar* members of their own stack in an infected capture.
