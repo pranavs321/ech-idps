@@ -1,10 +1,18 @@
+# raw / derived data is never committed (manifests list URL + SHA-256; re-fetch with the stage scripts)
 data/raw/
+data/raw_holdout/
 data/interim/
-data/labels/maltrail/
-data/labels/*.gz
+data/interim_holdout/
+data/processed/
+data/labels/
+data/mcfp_meta/
+data/confirmatory_reserved/
 data/manifests/mta_html_cache/
+logs/
+state/
 .venv/
-logs/*.pid
 __pycache__/
 *.pyc
-trash/
+*.pkl
+.pytest_cache/
+docs/_summary.html

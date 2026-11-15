@@ -1,0 +1,67 @@
+{
+  "pcap_hashes": 3174,
+  "pcap_unique_hashes": 3169,
+  "pcap_duplicate_hashes_across_or_within": 5,
+  "tables": {
+    "MTA 2013-2021 (processed)": {
+      "rows": 88085,
+      "captures": 1052,
+      "dup_conn_rows(capture,stream)": 0,
+      "dup_conn_rows(5tuple,time)": 0,
+      "ja4_missing": 0,
+      "ja4_malformed": 0,
+      "sni_empty_share": 0.3532,
+      "negative_duration": 0,
+      "syn_missing_share": 0.0005,
+      "server_hello_missing_share": 0.0,
+      "beh_nan_share": 0.0
+    },
+    "Stratosphere mcfp": {
+      "rows": 290488,
+      "captures": 104,
+      "dup_conn_rows(capture,stream)": 0,
+      "dup_conn_rows(5tuple,time)": 0,
+      "ja4_missing": 0,
+      "ja4_malformed": 0,
+      "sni_empty_share": 0.9495,
+      "negative_duration": 0,
+      "syn_missing_share": 0.0,
+      "server_hello_missing_share": 0.0,
+      "beh_nan_share": 0.0
+    },
+    "Stratosphere mcfp2": {
+      "rows": 109549,
+      "captures": 34,
+      "dup_conn_rows(capture,stream)": 0,
+      "dup_conn_rows(5tuple,time)": 0,
+      "ja4_missing": 0,
+      "ja4_malformed": 0,
+      "sni_empty_share": 0.0006,
+      "negative_duration": 0,
+      "syn_missing_share": 0.0031,
+      "server_hello_missing_share": 0.0,
+      "beh_nan_share": 0.0
+    },
+    "Stratosphere mcfp3": {
+      "rows": 833219,
+      "captures": 22,
+      "dup_conn_rows(capture,stream)": 0,
+      "dup_conn_rows(5tuple,time)": 0,
+      "ja4_missing": 0,
+      "ja4_malformed": 0,
+      "sni_empty_share": 0.7985,
+      "negative_duration": 0,
+      "syn_missing_share": 0.0,
+      "server_hello_missing_share": 0.0,
+      "beh_nan_share": 0.0
+    }
+  },
+  "mta_label_tiers": {
+    "gold_mal": 38888,
+    "unknown": 25832,
+    "weak_mal": 14643,
+    "benign": 8074,
+    "conflict": 648
+  },
+  "mta_server_with_both_labels_within_capture": 0
+}

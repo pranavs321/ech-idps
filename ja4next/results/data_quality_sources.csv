@@ -1,0 +1,5 @@
+,rows,captures,"dup_conn_rows(capture,stream)","dup_conn_rows(5tuple,time)",ja4_missing,ja4_malformed,sni_empty_share,negative_duration,syn_missing_share,server_hello_missing_share,beh_nan_share
+MTA 2013-2021 (processed),88085.0,1052.0,0.0,0.0,0.0,0.0,0.3532,0.0,0.0005,0.0,0.0
+Stratosphere mcfp,290488.0,104.0,0.0,0.0,0.0,0.0,0.9495,0.0,0.0,0.0,0.0
+Stratosphere mcfp2,109549.0,34.0,0.0,0.0,0.0,0.0,0.0006,0.0,0.0031,0.0,0.0
+Stratosphere mcfp3,833219.0,22.0,0.0,0.0,0.0,0.0,0.7985,0.0,0.0,0.0,0.0

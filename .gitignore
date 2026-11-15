@@ -22,3 +22,8 @@ ja4bench/results/
 ja4lab/**/data/
 ja4lab/**/.venv/
 ja4lab/**/__pycache__/
+
+# ja4next: every reported number lives in ja4next/results (small csv/json); caches stay ignored
+!ja4next/results/
+!ja4next/results/**
+ja4next/results/**/*.pkl

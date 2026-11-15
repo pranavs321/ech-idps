@@ -27,3 +27,27 @@ All URLs were checked live on 14 Nov 2026 unless marked *not verified*. Never do
 * Maltrail and ET Open both cite MTA (73 ET rules do), so they are not independent labels for MTA pcaps. Report gold-only results (MTA IOC + SSLBL + Feodo) beside all-label results.
 * Same-host caveat: on 2019-2021 Windows 10 hosts, browsers speak TLS 1.3 while SChannel malware speaks TLS 1.2, so the `t13`/`t12` prefix can separate classes on the same host. Report results stratified by TLS version.
 * Deduplicate by pcap SHA-256 across sources (Unit 42 quizzes and MTA posts share an author).
+
+
+---
+# Status on 15 Nov 2026 (what is integrated, reserved, or still open)
+
+Network check on 15 Nov: MCFP, Zenodo, Hugging Face, Mendeley, Figshare and NETRESEC answered HTTP 200/202 from the build machine
+(earlier sessions saw these blocked). Raw pcaps are still never committed; every fetch script deletes each pcap after extraction.
+
+| Source | Status | What we did |
+|---|---|---|
+| malware-traffic-analysis.net 2013–2021 | **integrated** (main data) | crawl, download, extract, label, evaluate (`scripts/run_all.sh`) |
+| Stratosphere MCFP botnet captures (1–120 MB) | **integrated** | 220 captures attempted, 0 failures, 104 with TLS (`scripts/fetch_mcfp.py`) |
+| Stratosphere Mixed + Normal captures (45 files, 27 GB) | **integrated** | clean-benign false-alarm test (`ja4next.foreign_benign`) |
+| Stratosphere larger banking-trojan captures (26 files, 7.4 GB; TrickBot, Dridex, Zbot, Tinba, Vawtrak, Emotet…) | **integrated** | more strictly-labelled malware captures for the second lab (`scripts/fetch_mcfp3.py`) |
+| Stratosphere other botnet captures > 120 MB (about 165 files, ~425 GB) | not fetched | size; most families have no certificate-blacklist labels. `crawl_mcfp.py` can widen the filter |
+| TQH-C2 v1.2.3 (Zenodo 23390499, CC BY 4.0) | **reserved confirmatory** | README, labels D, features D, scripts fetched (`data/confirmatory_reserved/`); pcaps (A 33.4 GB, B 4.3 GB, C 379 MB, D 1.8 GB) not fetched; no model has touched it |
+| CTU-SME-11 (Zenodo 7958259) | **reserved confirmatory** | README and summary table fetched; 11 archives of 0.7–26 GB not fetched (largest 26.5 GB); no model has touched it |
+| malware-traffic-analysis.net 2022–2026 | **locked holdout** | never downloaded; refused by the downloader until `docs/PREREG_FROZEN.sha256` exists |
+| ECU-MALNETT, Peekaboo, MalwareTraffic | reserved confirmatory | not fetched |
+| Tria.ge / ANY.RUN / Joe Sandbox outputs | excluded | terms of use |
+| CESNET-TLS-Year22 | not usable for JA4 | CSV flows with JA3/SNI only, no raw ClientHello or TCP fields |
+
+Why not "everything at once": the reserved sets are the pre-registered confirmatory evidence; touching them with a model would end their value.
+Why not all 425 GB of remaining Stratosphere botnet captures: their malware would be labelled only by weak host rules (see `docs/SECOND_LAB.md`), which adds volume but not trustworthy labels.
