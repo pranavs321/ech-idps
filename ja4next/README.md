@@ -7,7 +7,7 @@ Code, manifests and results for a leakage-controlled study of JA4/TLS-fingerprin
 > looked at. The pre-registered confirmatory test on malware-traffic-analysis.net 2022–2026 has **not** been run
 > (see [docs/PREREG_ADDENDUM.md](docs/PREREG_ADDENDUM.md); it needs the guide's sign-off first).
 
-**New to the project? Read [docs/ja4next_project_summary.pdf](docs/ja4next_project_summary.pdf)** — a plain-language walk-through.
+**New to the project? Read [docs/ja4next_full_guide.pdf](docs/ja4next_full_guide.pdf)** (12-page plain-language guide: pipeline, total capture analysis, findings, novelty, limits, viva Q&A). Short version: [docs/ja4next_project_summary.pdf](docs/ja4next_project_summary.pdf).
 
 ## The idea in three lines
 1. Many published JA4 malware detectors score 98–99%, but malware and benign traffic usually come from *different places*,
