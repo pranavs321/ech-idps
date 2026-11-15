@@ -50,6 +50,8 @@ Malware found at 1% false alarms, connections with a hostname, MTA 2013–2021:
 | TQH-C2, CTU-SME-11 | reserved confirmatory sets | README/labels only; no model touches them |
 
 Data-quality audit (duplicates, missing values, malformed fingerprints): `python3 -I scripts/data_quality.py` → `results/data_quality.json`.
+Raw-pcap audit (which downloaded captures feed the tables; duplicates, orphans, no-TLS captures): `python3 -I scripts/audit_raw.py [--apply]` → `results/raw_pcap_audit.csv`.
+TLS handshake profile and shortcut checks: `python3 -I scripts/handshake_profile.py` → `results/handshake/`, [docs/HANDSHAKE.md](docs/HANDSHAKE.md).
 
 ## Setup
 ```bash

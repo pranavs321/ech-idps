@@ -1,0 +1,10 @@
+{
+  "connections": 88085,
+  "labelled": 61605,
+  "tls13_share_all": 0.0575,
+  "sni_missing_share_malicious": 0.3877,
+  "sni_missing_share_benign": 0.0,
+  "malicious_ja4_also_seen_in_benign_connection_share": 0.607,
+  "captures_with_malicious_sharing_a_benign_ja4_share": 0.6471,
+  "distinct_ja4_all": 199
+}

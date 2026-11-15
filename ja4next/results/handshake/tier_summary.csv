@@ -1,0 +1,6 @@
+tier,n,sni_share,distinct_ja4,distinct_ja4s
+benign,8074,1.0,93,195
+conflict,648,1.0,27,40
+gold_mal,38888,0.6031,88,147
+unknown,25832,0.599,141,399
+weak_mal,14643,0.6368,44,61
