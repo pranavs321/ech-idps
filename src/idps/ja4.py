@@ -26,7 +26,8 @@ physics is the signature the whole system hunts.
 JA4 reference: Althouse et al., "JA4+ Network Fingerprinting", FoxIO 2023.
 Format: JA4_a = (q|t)(version)(d|i)(nciphers)(nextensions)(alpn)
         JA4_b = first 12 hex of sha256 of the sorted cipher list
-        JA4_c = first 12 hex of sha256 of sorted extensions + sig algs
+        JA4_c = first 12 hex of sha256 of "<sorted extensions without SNI and
+                ALPN>_<signature algorithms in the order sent>"
 """
 
 from __future__ import annotations
@@ -59,6 +60,7 @@ class ClientHelloInfo:
     extensions: List[int] = field(default_factory=list)
     sig_algs: List[int] = field(default_factory=list)
     alpn: Optional[str] = None
+    alpn_raw: bytes = b""           # first ALPN protocol exactly as sent
     has_sni: bool = False
     has_ech: bool = False
     transport: str = "t"  # 't' TCP, 'q' QUIC
@@ -86,6 +88,13 @@ def parse_client_hello(data: bytes) -> Optional[ClientHelloInfo]:
             return None
         off = 5
         if data[off] != 0x01:  # handshake type: client_hello
+            return None
+        # Refuse a ClientHello that is not all here. A hello split across TCP
+        # segments used to be parsed from its first piece, which silently
+        # dropped the later extensions and produced a confident, wrong JA4.
+        # flow.Flow reassembles segments before calling this.
+        hs_len = int.from_bytes(data[off + 1:off + 4], "big")
+        if len(data) < off + 4 + hs_len:
             return None
         off += 4                      # handshake type + 3-byte length
         info = ClientHelloInfo()
@@ -133,7 +142,8 @@ def parse_client_hello(data: bytes) -> Optional[ClientHelloInfo]:
                         info.sig_algs.append(s)
             elif etype == EXT_ALPN and len(body) >= 3:
                 plen = body[2]
-                info.alpn = body[3:3 + plen].decode("ascii", "ignore") or None
+                info.alpn_raw = bytes(body[3:3 + plen])
+                info.alpn = info.alpn_raw.decode("latin-1") or None
             elif etype == EXT_SUPPORTED_VERSIONS and len(body) >= 1:
                 n = body[0]
                 best = 0
@@ -149,14 +159,20 @@ def parse_client_hello(data: bytes) -> Optional[ClientHelloInfo]:
 
 
 def _version_code(v: int) -> str:
-    return {0x0304: "13", 0x0303: "12", 0x0302: "11", 0x0301: "10"}.get(v, "00")
+    return {0x0304: "13", 0x0303: "12", 0x0302: "11", 0x0301: "10",
+            0x0300: "s3", 0x0002: "s2"}.get(v, "00")
 
 
 def _alpn_code(alpn: Optional[str]) -> str:
+    """
+    First and last character of the first ALPN value. A non-ASCII first byte
+    gives "99", following FoxIO's reference Python and Rust implementations
+    (the ones that generated the published reference outputs).
+    """
     if not alpn:
         return "00"
-    if len(alpn) == 1:
-        return alpn + alpn
+    if ord(alpn[0]) > 127:
+        return "99"
     return alpn[0] + alpn[-1]
 
 
@@ -174,11 +190,42 @@ def compute_ja4(info: ClientHelloInfo) -> str:
     ne = min(len(info.extensions), 99)
     ja4_a = (f"{info.transport}{_version_code(info.effective_version)}"
              f"{sni_flag}{nc:02d}{ne:02d}{_alpn_code(info.alpn)}")
-    ja4_b = _trunc_sha256(sorted(info.ciphers))
-    ext_for_hash = sorted(e for e in info.extensions
-                          if e not in (EXT_SERVER_NAME, EXT_ALPN))
-    ja4_c = _trunc_sha256(ext_for_hash + sorted(info.sig_algs))
-    return f"{ja4_a}_{ja4_b}_{ja4_c}"
+    return f"{ja4_a}_{_ja4_b(info)}_{_ja4_c(info)}"
+
+
+def _ja4_b(info: ClientHelloInfo) -> str:
+    return _trunc_sha256(sorted(info.ciphers))
+
+
+def _ja4_c(info: ClientHelloInfo) -> str:
+    """
+    Extensions are sorted (SNI and ALPN left out); signature algorithms keep
+    the order they were sent in and follow an underscore. An earlier version
+    sorted the signature algorithms and had no separator, so 28 of 30 FoxIO
+    reference fingerprints did not match and a Tier-1 blocklist built from
+    public JA4 intelligence could never fire.
+    """
+    exts = sorted(e for e in info.extensions
+                  if e not in (EXT_SERVER_NAME, EXT_ALPN))
+    if not exts:
+        return "000000000000"
+    joined = ",".join(f"{e:04x}" for e in exts)
+    if info.sig_algs:
+        joined += "_" + ",".join(f"{s:04x}" for s in info.sig_algs)
+    return hashlib.sha256(joined.encode()).hexdigest()[:12]
+
+
+def stack_key(info: ClientHelloInfo) -> str:
+    """
+    The client TLS stack: protocol, TLS version, cipher hash, extension hash.
+    Unlike the full JA4 it leaves out the fields that depend on the
+    destination (SNI flag, counts, ALPN), so one library maps to one key.
+    This is the "K1" stack key of a concurrent student project at our school
+    (personal communication),
+    used here with credit.
+    """
+    return (f"{info.transport}{_version_code(info.effective_version)}"
+            f"_{_ja4_b(info)}_{_ja4_c(info)}")
 
 
 # ---------------------------------------------------------------------------

@@ -123,3 +123,19 @@ Tasks to **refuse or flag**:
 - Anything that widens a novelty claim without new evidence
 - Anything that expands the feature vector beyond 14 dimensions
 - Anything that makes attacker cost a tunable parameter
+
+---
+
+## Added 14 Nov 2026: real traffic
+
+- `scripts/05_real_pcap_eval.py` is the real-capture evaluation. Its 5-tuple join to
+  labels is the only place addresses may be used outside Modules 2 and 5.
+- `src/idps/module2_sensor/host_context.py` runs in the sensor plane and emits numbers
+  only. It is a separate optional input like D(x); the 14-D vector stays 14-D.
+- Run `python3 tests/test_real_pcap_sensor.py` and `python3 tests/test_host_context.py`
+  after any change to Module 2 or `ja4.py`. The simulated numbers from `run_all.py`
+  must not move when the sensor changes (AUC 0.9695, recall 0.691 at 0.5% FPR today).
+- Captures dated 2022-2026 are a pre-registered hold-out. Never download or score them
+  (`ja4next/AGENTS.md`).
+- Report simulated and real results separately. Never quote a simulated number as a
+  detection result.

@@ -1,0 +1,44 @@
+analysis,set,stratum,bal_acc_cw,roc_auc,tpr_at_1pct,tpr_at_0.1pct,n,n_pos,auc
+tls_version_stratified,TLS+BEH,TLS 1.3,0.6858683173542655,0.8343044164133188,0.02972027972027972,0.0034965034965034965,1729.0,572.0,
+tls_version_stratified,TLS+BEH,TLS 1.2,0.6444660224097649,0.6515205931761571,0.07908958636458117,0.010392849719393058,16027.0,9622.0,
+tls_version_stratified,TLS+BEH,TLS 1.0,0.63003728960418,0.882796738399462,0.2730329522528581,0.2730329522528581,1583.0,1487.0,
+tls_version_stratified,TLS+BEH,all,0.6748237744088552,0.70930683045325,0.13562510689242346,0.046348554814434756,19421.0,11694.0,
+tls_version_stratified,HR+TLS+BEH,TLS 1.3,0.7294121953995796,0.9454763041625618,0.6311188811188811,0.2692307692307692,1729.0,572.0,
+tls_version_stratified,HR+TLS+BEH,TLS 1.2,0.7788125045493774,0.9726968560696595,0.8070047807108709,0.43701933070047805,16027.0,9622.0,
+tls_version_stratified,HR+TLS+BEH,TLS 1.0,0.5952700257233235,0.8913290181573638,0.34162743779421656,0.34162743779421656,1583.0,1487.0,
+tls_version_stratified,HR+TLS+BEH,all,0.7786422376471318,0.9721017165891219,0.7787754403967847,0.3970412177184881,19421.0,11694.0,
+tls_version_stratified,TLS+BEHsrc,TLS 1.3,0.6532886458416967,0.8472009839771292,0.012237762237762238,0.0017482517482517483,1729.0,572.0,
+tls_version_stratified,TLS+BEHsrc,TLS 1.2,0.5622422481682301,0.5693070752022062,0.006339638328829765,0.0017667844522968198,16027.0,9622.0,
+tls_version_stratified,TLS+BEHsrc,TLS 1.0,0.6091125764153953,0.8744746133154002,0.016812373907195696,0.016812373907195696,1583.0,1487.0,
+tls_version_stratified,TLS+BEHsrc,all,0.6037106746824155,0.6533296960858741,0.03728407730460065,0.01094578416281854,19421.0,11694.0,
+version_only_baseline,TLS version (depth-1 tree),all,0.43561875492532154,0.27225171846274826,0.0,0.0,19421.0,11694.0,
+erm_vs_groupdro,ERM HR+TLS+BEH,all,0.7786422376471318,0.9721017165891219,0.7787754403967847,0.3970412177184881,19421.0,11694.0,
+erm_vs_groupdro,GroupDRO-approx HR+TLS+BEH,all,0.795474712585035,0.9654855362363629,0.7516675218060543,0.349238925944929,19421.0,11694.0,
+erm_vs_groupdro_worst_era,ERM HR+TLS+BEH,worst era AUC,,,,,,,0.8496954707584629
+erm_vs_groupdro_worst_era,GroupDRO-approx HR+TLS+BEH,worst era AUC,,,,,,,0.8586462749848577
+variance_decomposition,raw b_bytes_up,share between captures,,,,,,,0.2505378608760991
+variance_decomposition,raw b_bytes_up,share between eras,,,,,,,0.0022570663625758325
+variance_decomposition,raw b_mean_up,share between captures,,,,,,,0.21098910550691485
+variance_decomposition,raw b_mean_up,share between eras,,,,,,,0.016087448147412586
+variance_decomposition,raw b_mean_down,share between captures,,,,,,,0.2015783712482141
+variance_decomposition,raw b_mean_down,share between eras,,,,,,,0.007616667378976705
+variance_decomposition,raw b_med_gap_rtt,share between captures,,,,,,,0.10371338149236087
+variance_decomposition,raw b_med_gap_rtt,share between eras,,,,,,,3.2035136437347234e-05
+variance_decomposition,raw duration,share between captures,,,,,,,0.033915156434402016
+variance_decomposition,raw duration,share between eras,,,,,,,0.0034041671788663797
+variance_decomposition,raw b_byte_ratio,share between captures,,,,,,,0.2598484819789997
+variance_decomposition,raw b_byte_ratio,share between eras,,,,,,,0.015645765576732473
+variance_decomposition,raw b_dir_changes,share between captures,,,,,,,0.3834104248470268
+variance_decomposition,raw b_dir_changes,share between eras,,,,,,,0.08303766966112591
+variance_decomposition,host-relative hr_z_stack_b_bytes_up,share between captures,,,,,,,0.13386678271402996
+variance_decomposition,host-relative hr_z_stack_b_bytes_up,share between eras,,,,,,,0.004764171534580197
+variance_decomposition,host-relative hr_z_stack_b_bytes_down,share between captures,,,,,,,0.16255846120453166
+variance_decomposition,host-relative hr_z_stack_b_bytes_down,share between eras,,,,,,,0.003067993601894692
+variance_decomposition,host-relative hr_z_stack_b_byte_ratio,share between captures,,,,,,,0.10265721047981857
+variance_decomposition,host-relative hr_z_stack_b_byte_ratio,share between eras,,,,,,,0.005227817226738818
+variance_decomposition,host-relative hr_z_stack_b_up_frac,share between captures,,,,,,,0.1350035882380296
+variance_decomposition,host-relative hr_z_stack_b_up_frac,share between eras,,,,,,,0.008311578797004615
+variance_decomposition,host-relative hr_z_stack_b_mean_up,share between captures,,,,,,,0.15081483245757787
+variance_decomposition,host-relative hr_z_stack_b_mean_up,share between eras,,,,,,,0.006495341013539213
+variance_decomposition,host-relative hr_z_stack_b_mean_down,share between captures,,,,,,,0.255732454594212
+variance_decomposition,host-relative hr_z_stack_b_mean_down,share between eras,,,,,,,0.003224217308430255
